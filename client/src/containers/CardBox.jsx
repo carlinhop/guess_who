@@ -8,7 +8,19 @@ class CardBox extends React.Component {
   }
 
   render(){
-    return (<Card/>)
+    
+    let cards = this.props.game.cards.map((card, index)=>{
+      return (<Card gender= {card.gender} target={card.target} key={index}></Card>)
+      
+    }); 
+
+
+    return (
+      <div className="card-box">
+        
+        {cards}
+
+      </div>)
   }
   
 

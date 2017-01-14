@@ -5,12 +5,14 @@ class Main extends React.Component{
 
   constructor(props){
     super(props);
+    this.state = {game: props.game};
+
   }
 
   render(){
     return (
       <div className="main">
-        <CardBox />
+        <CardBox game={this.state.game}/>
 
       </div>)
   }

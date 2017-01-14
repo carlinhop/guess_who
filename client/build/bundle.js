@@ -58,10 +58,18 @@
 	
 	var _Main2 = _interopRequireDefault(_Main);
 	
+	var _Game = __webpack_require__(162);
+	
+	var _Game2 = _interopRequireDefault(_Game);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	var game = new _Game2.default();
+	game.createStack();
+	game.cards[0].target = true;
+	
 	window.onload = function () {
-	  _reactDom2.default.render(_react2.default.createElement(_Main2.default, null), document.getElementById('app'));
+	  _reactDom2.default.render(_react2.default.createElement(_Main2.default, { game: game }), document.getElementById('app'));
 	};
 
 /***/ },
@@ -19792,7 +19800,11 @@
 	  function Main(props) {
 	    _classCallCheck(this, Main);
 	
-	    return _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
+	    var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
+	
+	    _this.state = { game: props.game };
+	
+	    return _this;
 	  }
 	
 	  _createClass(Main, [{
@@ -19801,7 +19813,7 @@
 	      return _react2.default.createElement(
 	        'div',
 	        { className: 'main' },
-	        _react2.default.createElement(_CardBox2.default, null)
+	        _react2.default.createElement(_CardBox2.default, { game: this.state.game })
 	      );
 	    }
 	  }]);
@@ -19851,7 +19863,16 @@
 	  _createClass(CardBox, [{
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(_Card2.default, null);
+	
+	      var cards = this.props.game.cards.map(function (card, index) {
+	        return _react2.default.createElement(_Card2.default, { gender: card.gender, target: card.target, key: index });
+	      });
+	
+	      return _react2.default.createElement(
+	        'div',
+	        { className: 'card-box' },
+	        cards
+	      );
 	    }
 	  }]);
 	
@@ -19864,7 +19885,7 @@
 /* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
-	'use strict';
+	"use strict";
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -19879,10 +19900,73 @@
 	var Card = function Card(props) {
 	
 	  return _react2.default.createElement(
-	    'div',
-	    null,
-	    'Hola'
+	    "div",
+	    { className: "card" },
+	    props.target.toString()
 	  );
+	};
+	
+	exports.default = Card;
+
+/***/ },
+/* 162 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	
+	var _Card = __webpack_require__(163);
+	
+	var _Card2 = _interopRequireDefault(_Card);
+	
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Game = function () {
+	  function Game() {
+	    _classCallCheck(this, Game);
+	
+	    this.player = {};
+	    this.cards = [];
+	    this.winner;
+	  }
+	
+	  _createClass(Game, [{
+	    key: "createStack",
+	    value: function createStack() {
+	      this.cards.push(new _Card2.default("male"));
+	      this.cards.push(new _Card2.default("female"));
+	    }
+	  }]);
+	
+	  return Game;
+	}();
+	
+	exports.default = Game;
+
+/***/ },
+/* 163 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Card = function Card(gender) {
+	  _classCallCheck(this, Card);
+	
+	  this.gender = gender;
+	  this.target = false;
 	};
 	
 	exports.default = Card;

@@ -2,7 +2,7 @@ import React from 'react';
 
 const Card = function(props){
 
-  return (<div>Hola</div>)
+  return (<div className="card">{props.target.toString()}</div>)
 
 }
 
