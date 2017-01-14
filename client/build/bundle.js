@@ -62,7 +62,7 @@
 	
 	var _Game2 = _interopRequireDefault(_Game);
 	
-	var _Player = __webpack_require__(165);
+	var _Player = __webpack_require__(164);
 	
 	var _Player2 = _interopRequireDefault(_Player);
 	
@@ -70,9 +70,9 @@
 	
 	var game = new _Game2.default();
 	game.createStack();
-	game.cards[0].target = true;
+	game.selectTarget();
 	game.player = new _Player2.default("Carlos");
-	game.sieve(game.player.askQuestion("male"));
+	console.log(game.targetCard);
 	
 	window.onload = function () {
 	  _reactDom2.default.render(_react2.default.createElement(_Main2.default, { game: game }), document.getElementById('app'));
@@ -19876,7 +19876,7 @@
 	    value: function render() {
 	
 	      var cards = this.props.game.cards.map(function (card, index) {
-	        return _react2.default.createElement(_Card2.default, { gender: card.gender, target: card.target, key: index });
+	        return _react2.default.createElement(_Card2.default, { gender: card.gender, target: card.target, key: index, active: card.active });
 	      });
 	
 	      return _react2.default.createElement(
@@ -19951,13 +19951,15 @@
 	
 	    var _this = _possibleConstructorReturn(this, (QuestionBox.__proto__ || Object.getPrototypeOf(QuestionBox)).call(this, props));
 	
-	    _this.state = {};
+	    _this.state = { game: props.game };
 	    return _this;
 	  }
 	
 	  _createClass(QuestionBox, [{
 	    key: "render",
 	    value: function render() {
+	      var _this2 = this;
+	
 	      return _react2.default.createElement(
 	        "div",
 	        { className: "question-box" },
@@ -19965,6 +19967,7 @@
 	          "button",
 	          { id: "male", onClick: function onClick(e) {
 	              console.log(e);
+	              _this2.state.game.sieve("male");
 	            } },
 	          "Male"
 	        ),
@@ -19972,6 +19975,7 @@
 	          "button",
 	          { id: "female", onClick: function onClick(e) {
 	              console.log(e);
+	              _this2.state.game.sieve("female");
 	            } },
 	          "Female"
 	        )
@@ -19996,7 +20000,7 @@
 	
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 	
-	var _Card = __webpack_require__(164);
+	var _Card = __webpack_require__(165);
 	
 	var _Card2 = _interopRequireDefault(_Card);
 	
@@ -20011,6 +20015,7 @@
 	    this.player = {};
 	    this.cards = [];
 	    this.winner;
+	    this.targetCard;
 	  }
 	
 	  _createClass(Game, [{
@@ -20020,14 +20025,32 @@
 	      this.cards.push(new _Card2.default("female"));
 	    }
 	  }, {
+	    key: "selectTarget",
+	    value: function selectTarget() {
+	      this.cards[0].target = true;
+	      var targetCardList = this.cards.filter(function (card) {
+	        return card.target == true;
+	      });
+	      this.targetCard = targetCardList[0];
+	    }
+	  }, {
 	    key: "sieve",
 	    value: function sieve(characterAtribute) {
-	      var matchedCards = this.cards.filter(function (card) {
-	        if (card.gender == characterAtribute) {
-	          card.active = false;
-	          return true;
-	        }
-	      });
+	
+	      console.log(this);
+	
+	      if (this.targetCard.gender !== characterAtribute) {
+	        console.log("You're getting closer!");
+	
+	        var matchedCards = this.cards.filter(function (card) {
+	          if (card.gender == characterAtribute) {
+	            card.active = false;
+	            return true;
+	          }
+	        });
+	      } else {
+	        console.log("You got that right!");
+	      }
 	
 	      console.log(this.cards);
 	    }
@@ -20040,28 +20063,6 @@
 
 /***/ },
 /* 164 */
-/***/ function(module, exports) {
-
-	"use strict";
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-	
-	var Card = function Card(gender) {
-	  _classCallCheck(this, Card);
-	
-	  this.gender = gender;
-	  this.target = false;
-	  this.active = true;
-	};
-	
-	exports.default = Card;
-
-/***/ },
-/* 165 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -20092,6 +20093,28 @@
 	}();
 	
 	exports.default = Player;
+
+/***/ },
+/* 165 */
+/***/ function(module, exports) {
+
+	"use strict";
+	
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	
+	var Card = function Card(gender) {
+	  _classCallCheck(this, Card);
+	
+	  this.gender = gender;
+	  this.target = false;
+	  this.active = true;
+	};
+	
+	exports.default = Card;
 
 /***/ }
 /******/ ]);

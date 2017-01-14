@@ -7,9 +7,10 @@ import Player from './models/Player';
 
 const game = new Game();
 game.createStack();
-game.cards[0].target = true;
+game.selectTarget();
 game.player = new Player("Carlos");
-game.sieve(game.player.askQuestion("male"));
+console.log(game.targetCard);
+
 
 
 window.onload = function(){

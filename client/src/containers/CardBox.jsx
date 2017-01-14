@@ -10,7 +10,7 @@ class CardBox extends React.Component {
   render(){
     
     let cards = this.props.game.cards.map((card, index)=>{
-      return (<Card gender= {card.gender} target={card.target} key={index}></Card>)
+      return (<Card gender= {card.gender} target={card.target} key={index} active={card.active}></Card>)
       
     }); 
 
