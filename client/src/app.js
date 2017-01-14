@@ -1,9 +1,10 @@
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Main from './containers/Main';
 
 window.onload = function(){
   ReactDOM.render(
-    <h1> App Started </h1>,
+    <Main/>,
     document.getElementById('app')
   );
 }
