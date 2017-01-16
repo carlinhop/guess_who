@@ -19812,8 +19812,12 @@
 	
 	    var _this = _possibleConstructorReturn(this, (Main.__proto__ || Object.getPrototypeOf(Main)).call(this, props));
 	
-	    _this.state = { game: props.game };
+	    _this.state = { game: props.game, test: true };
 	
+	    _this.handleChange = function handleChange() {
+	      this.setState({ test: false });
+	      console.log("changing state: " + this.state.test.toString());
+	    }.bind(_this);
 	    return _this;
 	  }
 	
@@ -19824,7 +19828,7 @@
 	        'div',
 	        { className: 'main' },
 	        _react2.default.createElement(_CardBox2.default, { game: this.state.game }),
-	        _react2.default.createElement(_QuestionBox2.default, { game: this.state.game })
+	        _react2.default.createElement(_QuestionBox2.default, { game: this.state.game, test: this.handleChange })
 	      );
 	    }
 	  }]);
@@ -19896,7 +19900,7 @@
 /* 161 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 	
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -19906,13 +19910,19 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
+	var _classnames = __webpack_require__(166);
+	
+	var _classnames2 = _interopRequireDefault(_classnames);
+	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
 	var Card = function Card(props) {
+	  console.log(props);
+	  var classes = (0, _classnames2.default)("card", { active: props.active });
 	
 	  return _react2.default.createElement(
-	    "div",
-	    { className: "card" },
+	    'div',
+	    { className: classes },
 	    props.gender
 	  );
 	};
@@ -19937,6 +19947,8 @@
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 	
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+	
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 	
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -19949,10 +19961,7 @@
 	  function QuestionBox(props) {
 	    _classCallCheck(this, QuestionBox);
 	
-	    var _this = _possibleConstructorReturn(this, (QuestionBox.__proto__ || Object.getPrototypeOf(QuestionBox)).call(this, props));
-	
-	    _this.state = { game: props.game };
-	    return _this;
+	    return _possibleConstructorReturn(this, (QuestionBox.__proto__ || Object.getPrototypeOf(QuestionBox)).call(this, props));
 	  }
 	
 	  _createClass(QuestionBox, [{
@@ -19967,17 +19976,17 @@
 	          "button",
 	          { id: "male", onClick: function onClick(e) {
 	              console.log(e);
-	              _this2.state.game.sieve("male");
+	              _this2.props.game.sieve("male");
 	            } },
-	          "Male"
+	          "Is it male?"
 	        ),
 	        _react2.default.createElement(
 	          "button",
-	          { id: "female", onClick: function onClick(e) {
+	          _defineProperty({ id: "female", onClick: function onClick(e) {
 	              console.log(e);
-	              _this2.state.game.sieve("female");
-	            } },
-	          "Female"
+	              _this2.props.game.sieve("female");
+	            } }, "onClick", this.props.test),
+	          "Is it female?"
 	        )
 	      );
 	    }
@@ -20039,17 +20048,25 @@
 	
 	      console.log(this);
 	
-	      if (this.targetCard.gender !== characterAtribute) {
-	        console.log("You're getting closer!");
+	      if (this.targetCard.gender == characterAtribute) {
+	        console.log("Yes!");
 	
 	        var matchedCards = this.cards.filter(function (card) {
-	          if (card.gender == characterAtribute) {
+	          if (card.gender !== characterAtribute) {
 	            card.active = false;
 	            return true;
 	          }
 	        });
 	      } else {
-	        console.log("You got that right!");
+	
+	        console.log("No!");
+	
+	        var _matchedCards = this.cards.filter(function (card) {
+	          if (card.gender == characterAtribute) {
+	            card.active = false;
+	            return true;
+	          }
+	        });
 	      }
 	
 	      console.log(this.cards);
@@ -20115,6 +20132,60 @@
 	};
 	
 	exports.default = Card;
+
+/***/ },
+/* 166 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
+	  Copyright (c) 2016 Jed Watson.
+	  Licensed under the MIT License (MIT), see
+	  http://jedwatson.github.io/classnames
+	*/
+	/* global define */
+	
+	(function () {
+		'use strict';
+	
+		var hasOwn = {}.hasOwnProperty;
+	
+		function classNames () {
+			var classes = [];
+	
+			for (var i = 0; i < arguments.length; i++) {
+				var arg = arguments[i];
+				if (!arg) continue;
+	
+				var argType = typeof arg;
+	
+				if (argType === 'string' || argType === 'number') {
+					classes.push(arg);
+				} else if (Array.isArray(arg)) {
+					classes.push(classNames.apply(null, arg));
+				} else if (argType === 'object') {
+					for (var key in arg) {
+						if (hasOwn.call(arg, key) && arg[key]) {
+							classes.push(key);
+						}
+					}
+				}
+			}
+	
+			return classes.join(' ');
+		}
+	
+		if (typeof module !== 'undefined' && module.exports) {
+			module.exports = classNames;
+		} else if (true) {
+			// register as 'classnames', consistent with npm package name
+			!(__WEBPACK_AMD_DEFINE_ARRAY__ = [], __WEBPACK_AMD_DEFINE_RESULT__ = function () {
+				return classNames;
+			}.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__), __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
+		} else {
+			window.classNames = classNames;
+		}
+	}());
+
 
 /***/ }
 /******/ ]);

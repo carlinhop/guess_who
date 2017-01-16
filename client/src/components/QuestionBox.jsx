@@ -1,10 +1,11 @@
 import React from 'react';
 
+
 class QuestionBox extends React.Component{
 
   constructor(props){
     super(props);
-    this.state={game: props.game};
+    
   }
 
   render(){
@@ -12,12 +13,12 @@ class QuestionBox extends React.Component{
     <div className="question-box">
       <button id="male" onClick={(e)=>{
         console.log(e);
-        this.state.game.sieve("male");
-      }}>Male</button>
+        this.props.game.sieve("male");
+      }}>Is it male?</button>
       <button id="female" onClick={(e)=>{
         console.log(e);
-        this.state.game.sieve("female");
-      }}>Female</button>
+        this.props.game.sieve("female");
+      }} onClick={this.props.test}>Is it female?</button>
     </div>)
   }
 }

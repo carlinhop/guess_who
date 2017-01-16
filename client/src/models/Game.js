@@ -28,11 +28,11 @@ class Game{
 
     console.log(this);
 
-    if(this.targetCard.gender !== characterAtribute){
-      console.log("You're getting closer!");
+    if(this.targetCard.gender == characterAtribute){
+      console.log("Yes!");
 
       let matchedCards = this.cards.filter((card)=>{
-        if (card.gender == characterAtribute){
+        if (card.gender !== characterAtribute){
           card.active = false;
           return true;
         }
@@ -40,7 +40,15 @@ class Game{
     }
 
     else{
-      console.log("You got that right!")
+
+      console.log("No!");
+
+      let matchedCards = this.cards.filter((card)=>{
+        if (card.gender == characterAtribute){
+          card.active = false;
+          return true;
+        }
+      });
       
     }
 

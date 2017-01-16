@@ -8,5 +8,11 @@
   width: 160px;
   background-color: yellowgreen;
   border-radius: 10px;
-  margin-right: 10%
+  margin-right: 10%;
+  opacity: 0.2;
+}
+
+.card.active{
+opacity: 1;
+
 }
